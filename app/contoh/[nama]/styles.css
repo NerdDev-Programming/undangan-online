@@ -1,0 +1,67 @@
+section {
+  height: 100vh;
+  /* background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat; */
+  position: relative;
+}
+
+/* section#home::before {
+  background-image: url("/contohCouple.jpg");
+  opacity: 0.5;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  content: "";
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+} */
+
+section#home {
+  /* background-image: url("/contohCouple.jpg"); */
+  /* position: relative; */
+}
+
+section#weddingDay {}
+
+section#weddingDay::before {
+  background-image: url("/couple2.jpg");
+  opacity: 0.5;
+  background-position: center;
+  background-size: contain;
+  background-repeat: repeat-x;
+  content: "";
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+section#profile {
+  background-color: beige;
+  height: 100%;
+}
+
+#main-center {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  /* height: 100vh; */
+}
+
+#bottom1 {
+  position: absolute;
+  /* left: 0; */
+  width: 100%;
+  text-align: center;
+  bottom: 15vh;
+  font-weight: 700;
+}
