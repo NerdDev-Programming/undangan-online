@@ -13,8 +13,10 @@ specifiers:
   react: 18.2.0
   react-bootstrap: ^2.7.0
   react-dom: 18.2.0
-  react-infinite-scroll-component: ^6.1.0
+  react-infinite-scroller: ^1.2.6
+  react-photo-album: ^2.0.0
   typescript: 4.9.4
+  yet-another-react-lightbox: ^2.2.7
 
 dependencies:
   '@formkit/auto-animate': 1.0.0-beta.6
@@ -29,8 +31,10 @@ dependencies:
   react: 18.2.0
   react-bootstrap: 2.7.0_5ndqzdd6t4rivxsukjv3i3ak2q
   react-dom: 18.2.0_react@18.2.0
-  react-infinite-scroll-component: 6.1.0_react@18.2.0
+  react-infinite-scroller: 1.2.6_react@18.2.0
+  react-photo-album: 2.0.0_react@18.2.0
   typescript: 4.9.4
+  yet-another-react-lightbox: 2.2.7_biqbaboplfbrettd7655fr4n2y
 
 packages:
 
@@ -1917,13 +1921,13 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-infinite-scroll-component/6.1.0_react@18.2.0:
-    resolution: {integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==}
+  /react-infinite-scroller/1.2.6_react@18.2.0:
+    resolution: {integrity: sha512-mGdMyOD00YArJ1S1F3TVU9y4fGSfVVl6p5gh/Vt4u99CJOptfVu/q5V/Wlle72TMgYlBwIhbxK5wF0C/R33PXQ==}
     peerDependencies:
-      react: '>=16.0.0'
+      react: ^0.14.9 || ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      prop-types: 15.8.1
       react: 18.2.0
-      throttle-debounce: 2.3.0
     dev: false
 
   /react-is/16.13.1:
@@ -1932,6 +1936,15 @@ packages:
 
   /react-lifecycles-compat/3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
+    dev: false
+
+  /react-photo-album/2.0.0_react@18.2.0:
+    resolution: {integrity: sha512-kmtHZ5XOMF6dozMlyM8/NhK9PQbEkvZVryCYqB1L9JavZNGGx5bUT7SBw401HeGO9xY1MI1+49l5l+7xok4zRA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:
@@ -2175,11 +2188,6 @@ packages:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: false
 
-  /throttle-debounce/2.3.0:
-    resolution: {integrity: sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==}
-    engines: {node: '>=8'}
-    dev: false
-
   /tiny-glob/0.2.9:
     resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
     dependencies:
@@ -2330,6 +2338,17 @@ packages:
 
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
+    dev: false
+
+  /yet-another-react-lightbox/2.2.7_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-v6/P2NUOjAQ9egmPYyn8BG3qs6tszVNGWC5fVaKaURqDXcwEqpoSBr4/9djWwiW6DdzxJh06KRV9Fas2HHeExg==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /yocto-queue/0.1.0:

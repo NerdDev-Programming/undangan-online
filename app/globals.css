@@ -4,5 +4,6 @@ body,
 html {
   height: 100vh;
   margin: 0;
+  scroll-behavior: smooth;
   /* padding: 20px; */
 }

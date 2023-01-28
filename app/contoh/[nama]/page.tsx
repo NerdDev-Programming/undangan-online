@@ -5,7 +5,9 @@ import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
 import { Button, Container } from "react-bootstrap";
 import dayjs from "dayjs";
-// import contohCouple from "./contohCouple.jpg";
+import InfiniteScroll from "react-infinite-scroller";
+import Lightbox from "yet-another-react-lightbox";
+import PhotoAlbum from "react-photo-album";
 
 const fontNama = Dancing_Script({
 	weight: "400",
@@ -29,7 +31,7 @@ const Page = ({ params }) => {
 				/>
 				<div id="main-center">
 					<h3>The Wedding of</h3>
-					<h1 className={`${fontNama.className} `} style={{ fontSize: "80px" }}>
+					<h1 className={`${fontNama.className}`} style={{ fontSize: "80px" }}>
 						Andi and Rita
 					</h1>
 				</div>
@@ -38,26 +40,23 @@ const Page = ({ params }) => {
 					{params.nama.charAt(0).toUpperCase() + params.nama.slice(1)}
 				</div>
 			</section>
-			<section id="weddingDay">
+			<section id="weddingDay" style={{ overflow: "auto" }}>
 				<div id="main-center">
 					<h2 className={`${fontNama.className}`}>Save the Date</h2>
-					<h3>{dayjs().format("dddd, DD MMMM YYYY")}</h3>
-					<Image
-						src={"/test.png"}
-						alt={"happines"}
-						width={300}
-						height={300}
-						style={{ objectFit: "contain" }}
-					/>
-					<h1 className={`${fontNama.className}`}>Andi and Rita</h1>
+					<h3>{dayjs("2023-03-15").format("dddd, DD MMMM YYYY")}</h3>
+					<Image src={"/test.png"} alt={"happines"} width={200} height={200} />
+					<br />
+					<h1 className={`${fontNama.className}`} style={{ fontSize: "3rem" }}>
+						Andi and Rita
+					</h1>
 				</div>
 			</section>
-			<section id="profile">
-				<Container className="py-3 text-center">
-					<h4>
+			<section id="profile" className="py-4">
+				<Container className="text-center">
+					<h5>
 						By the grace of god we cordially request the honour of your presence
 						to share the joy of marriage of
-					</h4>
+					</h5>
 					<br />
 					<h2 className={fontNama.className}>The Groom</h2>
 					<Image
@@ -67,7 +66,6 @@ const Page = ({ params }) => {
 						height={300}
 						style={{
 							objectFit: "contain",
-							borderRadius: "40px",
 							width: "auto",
 							height: "auto",
 						}}
@@ -111,8 +109,123 @@ const Page = ({ params }) => {
 					</p>
 				</Container>
 			</section>
-			<section id="dates">
-				
+			<section id="dates" className="py-3 text-center align-content-center">
+				<h1
+					className={`text-center ${fontNama.className}`}
+					style={{ fontSize: "3rem" }}
+				>
+					Save The Date
+				</h1>
+				<br />
+				<Container style={{ width: "30rem" }}>
+					<p>
+						“But at the beginning of creation God ‘made them male and female.’
+						‘For this reason a man will leave his father and mother and be
+						united to his wife, and the two will become one flesh.’ So they are
+						no longer two, but one flesh. Therefore what God has joined
+						together, let no one separate.”
+					</p>
+					(Mark 10:6-9)
+					<Image
+						src={"/contoh4.jpg"}
+						alt="contoh4"
+						fill
+						style={{
+							zIndex: -1,
+							opacity: 0.6,
+							objectFit: "cover",
+						}}
+					/>
+
+					<br />
+					<br />
+					<div id="detail-tanggal" className="py-2 rounded">
+						<h2>Engagement/Sangjit</h2>
+						<br />
+						<p>{dayjs().format("dddd, DD MMMM YYYY")}</p>
+						<Image
+							src={"/schedule.png"}
+							alt={"schedule"}
+							width={50}
+							height={50}
+						/>{" "}
+						<br />
+						Imlek: 22-10-2570
+						<br />
+						<br />
+						<Image src={"/clock.png"} alt={"clock"} width={50} height={50} />
+						<br />
+						17.00 WIB
+						<br />
+						<br />
+						<Image src={"/map.png"} alt={"map"} width={50} height={50} />
+						<p>
+							Hotel Golden Tulip
+							<br />
+							Jl. Teuku Umar No. 39
+							<br />
+							<br />
+							<a
+								href="https://goo.gl/maps/dUWiG47dTHDdF3oj8"
+								target={"_blank"}
+								rel="noopener noreferrer"
+								className="btn btn-primary"
+							>
+								Buka Maps
+							</a>
+						</p>
+					</div>
+					<br />
+					<br />
+					<div id="detail-tanggal" className="py-2 rounded">
+						<h2>Wedding Reception</h2>
+						<br />
+						<p>{dayjs("2023-03-15").format("dddd, DD MMMM YYYY")}</p>
+						<Image
+							src={"/schedule.png"}
+							alt={"schedule"}
+							width={50}
+							height={50}
+						/>{" "}
+						<br />
+						Imlek: 22-12-2570
+						<br />
+						<br />
+						<Image src={"/clock.png"} alt={"clock"} width={50} height={50} />
+						<br />
+						17.00 WIB - 21.00 WIB
+						<br />
+						<br />
+						<Image src={"/map.png"} alt={"map"} width={50} height={50} />
+						<p>
+							Hotel Aston
+							<br />
+							Jl. Gadjah Mada No. 21
+							<br />
+							<br />
+							<a
+								href="https://goo.gl/maps/ZtYhHanAdEPknzto9"
+								target={"_blank"}
+								rel="noopener noreferrer"
+								className="btn btn-primary"
+							>
+								Buka Maps
+							</a>
+						</p>
+					</div>
+				</Container>
+			</section>
+			<Container className="text-center py-5 bg-success">
+				<p className="text-wrap">
+					“Like wise, husbands, live with your wives in an understanding way,
+					showing honor to the woman as the weaker vessel, since they are heirs
+					with you of the grace of life, so that your prayers may not be
+					hindered.” <br />
+					(1 Petrus 3:7)
+				</p>
+			</Container>
+			<section id="galery">
+				<h1 className={`${fontNama.className} text-center`}>Our Galery</h1>
 			</section>
 		</>
 	);
