@@ -1,13 +1,18 @@
 "use client";
 
 import "./styles.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Carousel } from "react-bootstrap";
 import dayjs from "dayjs";
-import InfiniteScroll from "react-infinite-scroller";
 import Lightbox from "yet-another-react-lightbox";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
+import { useState, useRef, useEffect } from "react";
+
+import ImageList from "@components/ImageList";
 
 const fontNama = Dancing_Script({
 	weight: "400",
@@ -15,7 +20,19 @@ const fontNama = Dancing_Script({
 	display: "auto",
 });
 
+const photos = [
+	{ src: "/contohCouple.jpg", width: 800, height: 600 },
+	{ src: "/contoh2.jpg", width: 800, height: 1200 },
+	{ src: "/contoh3.jpg", width: 800, height: 1200 },
+	{ src: "/contoh4.jpg", width: 800, height: 1200 },
+	{ src: "/contoh5.jpg", width: 800, height: 1200 },
+	{ src: "/kang daniel.jpg", width: 750, height: 500 },
+	{ src: "/karina.jpg", width: 1600, height: 900 },
+];
+
 const Page = ({ params }) => {
+	const [index, setIndex] = useState(-1);
+
 	return (
 		<>
 			<section id="home">
@@ -40,7 +57,8 @@ const Page = ({ params }) => {
 					{params.nama.charAt(0).toUpperCase() + params.nama.slice(1)}
 				</div>
 			</section>
-			<section id="weddingDay" style={{ overflow: "auto" }}>
+
+			<section id="weddingDay">
 				<div id="main-center">
 					<h2 className={`${fontNama.className}`}>Save the Date</h2>
 					<h3>{dayjs("2023-03-15").format("dddd, DD MMMM YYYY")}</h3>
@@ -51,7 +69,8 @@ const Page = ({ params }) => {
 					</h1>
 				</div>
 			</section>
-			<section id="profile" className="py-4">
+
+			<section id="profile" className={"py-4"}>
 				<Container className="text-center">
 					<h5>
 						By the grace of god we cordially request the honour of your presence
@@ -109,6 +128,7 @@ const Page = ({ params }) => {
 					</p>
 				</Container>
 			</section>
+
 			<section id="dates" className="py-3 text-center align-content-center">
 				<h1
 					className={`text-center ${fontNama.className}`}
@@ -215,18 +235,115 @@ const Page = ({ params }) => {
 					</div>
 				</Container>
 			</section>
-			<Container className="text-center py-5 bg-success">
-				<p className="text-wrap">
-					“Like wise, husbands, live with your wives in an understanding way,
-					showing honor to the woman as the weaker vessel, since they are heirs
-					with you of the grace of life, so that your prayers may not be
-					hindered.” <br />
-					(1 Petrus 3:7)
-				</p>
-			</Container>
-			<section id="galery">
+			<div className={""} style={{ backgroundColor: "beige" }}>
+				<Container className="text-center py-3">
+					<p className="text-wrap">
+						“Like wise, husbands, live with your wives in an understanding way,
+						showing honor to the woman as the weaker vessel, since they are
+						heirs with you of the grace of life, so that your prayers may not be
+						hindered.” <br />
+						(1 Petrus 3:7)
+					</p>
+				</Container>
+			</div>
+			<section id="galery" className={"text-center justify-content-around "}>
+				<br />
 				<h1 className={`${fontNama.className} text-center`}>Our Galery</h1>
+				<br />
+				<PhotoAlbum
+					layout="masonry"
+					photos={photos}
+					renderPhoto={ImageList}
+					onClick={({ index }) => setIndex(index)}
+				/>
+				<Lightbox
+					slides={photos}
+					open={index >= 0}
+					index={index}
+					close={() => setIndex(-1)}
+					plugins={[Thumbnails]}
+				/>
 			</section>
+			<section
+				id="outtro"
+				className={"text-center d-flex justify-content-around"}
+			>
+				<div
+					style={{
+						zIndex: -1,
+						position: "absolute",
+						opacity: 0.6,
+					}}
+				>
+					<Carousel interval={2000} fade controls={false} indicators={false}>
+						<Carousel.Item>
+							<Image
+								src={"/contoh5.jpg"}
+								alt="contoh"
+								width={600}
+								height={700}
+								style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+								className={"img-fluid"}
+							/>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Image
+								src={"/contohCouple.jpg"}
+								alt="contoh"
+								width={600}
+								height={700}
+								style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+								className={"img-fluid"}
+							/>
+						</Carousel.Item>
+						<Carousel.Item>
+							<Image
+								src={"/karina.jpg"}
+								alt="contoh"
+								width={600}
+								height={700}
+								style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+								className={"img-fluid"}
+							/>
+						</Carousel.Item>
+					</Carousel>
+				</div>
+				<Container className="py-4 text-center">
+					<div id="main-center">
+						<p
+							style={{ fontSize: "1.5rem", width: "80vw", margin: "auto" }}
+							className={"word-wrap"}
+						>
+							Our joy will be more complete with your presence and blessing in
+							this celebration of love. With warm regards,
+						</p>
+						<h1
+							className={`${fontNama.className}`}
+							style={{ fontSize: "80px" }}
+						>
+							Andi and Rita
+						</h1>
+						<p style={{ fontSize: "1.5rem" }}>
+							Family of Mr. Kurniawan and Mrs. Betty <br />
+							Family of Mr. Liman and Mrs. Karina
+						</p>
+					</div>
+				</Container>
+			</section>
+			<footer>
+				Digital Invitation, created by: NerDev <br />
+				WA:
+				<br />
+				<br />
+				<Image
+					src={"/whatsapp-logo.png"}
+					alt={"whatsapp"}
+					height={50}
+					width={50}
+				/>
+				&nbsp;&nbsp;&nbsp;
+				<Image src={"/instagram.png"} alt={"ig"} height={50} width={50} />
+			</footer>
 		</>
 	);
 };
