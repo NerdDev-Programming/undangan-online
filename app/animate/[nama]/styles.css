@@ -1,0 +1,95 @@
+section {
+  height: 100vh;
+  position: relative;
+  width: 100vw;
+}
+
+#detail-tanggal {
+  background-color: rgb(245, 255, 250, 0.7);
+  width: 70vw;
+  margin: auto;
+}
+
+section#dates {
+  height: 100%;
+  width: 100vw;
+}
+
+.hidden {
+  opacity: 0;
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+}
+
+.show {
+  opacity: 1;
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+}
+
+section#weddingDay::before {
+  background-image: url("/contoh2.jpg");
+  opacity: 0.5;
+  background-position: center;
+  background-size: cover;
+  background-repeat: repeat-x;
+  content: "";
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+section#outtro {
+  height: 100vh;
+}
+
+section#profile {
+  background-color: beige;
+  height: 100%;
+}
+
+section#galery {
+  height: 100%;
+  width: 90vw;
+  text-align: center;
+  align-items: center;
+  margin: auto;
+  padding-bottom: 30px;
+}
+
+#main-center {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  /* height: 100vh; */
+}
+
+#bottom1 {
+  position: absolute;
+  /* left: 0; */
+  width: 100%;
+  text-align: center;
+  bottom: 15vh;
+  font-weight: 700;
+}
+
+footer {
+  height: 10vh;
+  font-size: 14px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: auto;
+}

@@ -5,12 +5,13 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
-import { Button, Container, Carousel } from "react-bootstrap";
+import { Container, Carousel } from "react-bootstrap";
 import dayjs from "dayjs";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 import ImageList from "@components/ImageList";
 
