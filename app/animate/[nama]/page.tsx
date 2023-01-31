@@ -11,7 +11,7 @@ import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
 import { useState } from "react";
-import { motion, Variants, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 import ImageList from "@components/ImageList";
 
@@ -31,19 +31,13 @@ const photos = [
 	{ src: "/karina.jpg", width: 1600, height: 900 },
 ];
 
-// const homeVariants: Variants = {
-// 	onscreen: {
-// 		transition,
-// 	},
-// };
-
 const Page = ({ params }) => {
 	const [index, setIndex] = useState(-1);
 
 	return (
 		<>
 			<motion.div
-				initial={{ opacity: 0, y: 100 }}
+				initial={{ opacity: 0, y: 200 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.8 }}
@@ -138,7 +132,7 @@ const Page = ({ params }) => {
 									width: "auto",
 									height: "auto",
 								}}
-								className={"rounded img-fluid"}
+								className={"img-fluid"}
 							/>
 
 							<div style={{ fontSize: "30px" }}>Andi</div>
@@ -162,13 +156,15 @@ const Page = ({ params }) => {
 							/>
 						</motion.div>
 
+						<br />
+
 						<motion.div
 							initial={{ opacity: 0, y: 200 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, amount: 0.2 }}
 							transition={{ duration: 1 }}
 						>
-							<h2 className={fontNama.className}>The Bride</h2>
+							<h2 className={`${fontNama.className}`}>The Bride</h2>
 							<Image
 								src={"/karina.jpg"}
 								alt="the groom"
@@ -176,7 +172,6 @@ const Page = ({ params }) => {
 								height={300}
 								style={{
 									objectFit: "contain",
-									borderRadius: "40px",
 									width: "auto",
 									height: "auto",
 								}}
@@ -193,8 +188,8 @@ const Page = ({ params }) => {
 			</motion.div>
 
 			<motion.div
-				initial={{ opacity: 0, x: -200 }}
-				whileInView={{ opacity: 1, x: 0 }}
+				initial={{ opacity: 0, y: 200 }}
+				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, amount: 0.1 }}
 				transition={{ duration: 1 }}
 			>
@@ -240,6 +235,7 @@ const Page = ({ params }) => {
 						/>
 
 						<br />
+
 						<motion.div
 							initial={{ opacity: 0, y: 200 }}
 							whileInView={{ opacity: 1, y: 0 }}
@@ -341,9 +337,10 @@ const Page = ({ params }) => {
 					</Container>
 				</section>
 			</motion.div>
+
 			<div className={""} style={{ backgroundColor: "beige", width: "100%" }}>
 				<motion.div
-					initial={{ opacity: 0, x: 200 }}
+					initial={{ opacity: 0, x: -200 }}
 					whileInView={{ opacity: 1, x: 0 }}
 					viewport={{ once: true, amount: 0.2 }}
 					transition={{ duration: 1 }}
@@ -359,6 +356,7 @@ const Page = ({ params }) => {
 					</Container>
 				</motion.div>
 			</div>
+
 			<section id="galery" className={"text-center justify-content-around "}>
 				<motion.div
 					initial={{ opacity: 0, y: 200 }}
@@ -368,12 +366,19 @@ const Page = ({ params }) => {
 				>
 					<h1 className={`${fontNama.className} text-center`}>Our Galery</h1>
 					<br />
-					<PhotoAlbum
-						layout="masonry"
-						photos={photos}
-						renderPhoto={ImageList}
-						onClick={({ index }) => setIndex(index)}
-					/>
+					<motion.div
+						initial={{ opacity: 0, transform: "scale(0)" }}
+						whileInView={{ opacity: 1, transform: "scale(1)" }}
+						viewport={{ once: true, amount: 0.2 }}
+						transition={{ duration: 1 }}
+					>
+						<PhotoAlbum
+							layout="masonry"
+							photos={photos}
+							renderPhoto={ImageList}
+							onClick={({ index }) => setIndex(index)}
+						/>
+					</motion.div>
 					<Lightbox
 						slides={photos}
 						open={index >= 0}
@@ -383,6 +388,7 @@ const Page = ({ params }) => {
 					/>
 				</motion.div>
 			</section>
+
 			<section
 				id="outtro"
 				className={"text-center d-flex justify-content-around"}
@@ -442,26 +448,34 @@ const Page = ({ params }) => {
 
 				<Container className="py-4 text-center">
 					<div id="main-center">
-						<p
-							style={{ fontSize: "1.5rem", width: "80vw", margin: "auto" }}
-							className={"word-wrap"}
+						<motion.div
+							initial={{ opacity: 0, y: 200 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true, amount: 0.2 }}
+							transition={{ duration: 1 }}
 						>
-							Our joy will be more complete with your presence and blessing in
-							this celebration of love. With warm regards,
-						</p>
-						<h1
-							className={`${fontNama.className}`}
-							style={{ fontSize: "80px" }}
-						>
-							Andi and Rita
-						</h1>
-						<p style={{ fontSize: "1.5rem" }}>
-							Family of Mr. Kurniawan and Mrs. Betty <br />
-							Family of Mr. Liman and Mrs. Karina
-						</p>
+							<p
+								style={{ fontSize: "1.5rem", width: "80vw", margin: "auto" }}
+								className={"word-wrap"}
+							>
+								Our joy will be more complete with your presence and blessing in
+								this celebration of love. With warm regards,
+							</p>
+							<h1
+								className={`${fontNama.className}`}
+								style={{ fontSize: "80px" }}
+							>
+								Andi and Rita
+							</h1>
+							<p style={{ fontSize: "1.5rem" }}>
+								Family of Mr. Kurniawan and Mrs. Betty <br />
+								Family of Mr. Liman and Mrs. Karina
+							</p>
+						</motion.div>
 					</div>
 				</Container>
 			</section>
+
 			<footer>
 				Digital Invitation, created by: NerDev <br />
 				WA:

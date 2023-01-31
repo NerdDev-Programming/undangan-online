@@ -64,6 +64,7 @@ section#galery {
   align-items: center;
   margin: auto;
   padding-bottom: 30px;
+  padding-top: 10px;
 }
 
 #main-center {
@@ -85,7 +86,7 @@ section#galery {
 }
 
 footer {
-  height: 10vh;
+  height: 15vh;
   font-size: 14px;
   text-align: center;
   justify-content: center;
