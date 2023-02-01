@@ -11,6 +11,7 @@
   "dependencies": {
     "@formkit/auto-animate": "1.0.0-beta.6",
     "@next/font": "13.1.5",
+    "@prisma/client": "^4.9.0",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
@@ -19,10 +20,14 @@
     "eslint-config-next": "13.1.5",
     "framer-motion": "^8.5.4",
     "next": "13.1.5",
+    "prisma": "^4.9.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.0",
+    "react-chat-elements": "^12.0.7",
     "react-dom": "18.2.0",
     "react-photo-album": "^2.0.0",
+    "short-uuid": "^4.2.2",
+    "swr": "^2.0.3",
     "typescript": "4.9.4",
     "yet-another-react-lightbox": "^2.2.7"
   }

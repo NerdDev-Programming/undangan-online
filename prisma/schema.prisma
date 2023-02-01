@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model chat {
+  id          String   @id @db.VarChar(10)
+  nama        String   @db.Text
+  chat        String   @db.Text
+  id_mempelai String   @db.VarChar(10)
+  mempelai    mempelai @relation(fields: [id_mempelai], references: [id], onDelete: Cascade, map: "kd_mempelai")
+
+  @@index([id_mempelai], map: "kd_mempelai")
+}
+
+model mempelai {
+  id            String @id @db.VarChar(10)
+  nama_mempelai String @db.Text
+  chat          chat[]
+}

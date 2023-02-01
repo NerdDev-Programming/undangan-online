@@ -2,6 +2,7 @@
 
 import "./globals.css";
 import "yet-another-react-lightbox/styles.css";
+import "react-chat-elements/dist/main.css";
 
 import { Rubik } from "@next/font/google";
 import autoAnimate from "@formkit/auto-animate";

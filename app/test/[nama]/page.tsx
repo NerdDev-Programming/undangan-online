@@ -6,16 +6,16 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
-import { Container, Carousel, Form, Button } from "react-bootstrap";
+import { Container, Carousel, Form, FormGroup, Button } from "react-bootstrap";
 import dayjs from "dayjs";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
-import { useContext, useReducer, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { MessageList } from "react-chat-elements";
+import { MessageList, Avatar } from "react-chat-elements";
 import React from "react";
 
 import ImageList from "@components/ImageList";
@@ -44,23 +44,9 @@ const sendData = () => {
 	//! send data
 };
 
-const testSubmit = (e) => {
-	e.preventDefault();
-};
-
 const Page = ({ params }) => {
-	const [index, setIndex] = useState(-1);
-	const [listUcapan, setListUcapan] = useReducer(
-		(prev, next) => {
-			const data = { ...prev, ...next };
-			return data;
-		},
-		{
-			nama: "test",
-			message: "test",
-		},
-	);
 	let messageListReferance = React.createRef();
+	const [index, setIndex] = useState(-1);
 
 	return (
 		<>
@@ -423,7 +409,7 @@ const Page = ({ params }) => {
 			<motion.div
 				initial={{ opacity: 0, y: 200 }}
 				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true, amount: 0.1 }}
+				viewport={{ once: true, amount: 0.2 }}
 				transition={{ duration: 1 }}
 			>
 				<section id="ucapan">
@@ -432,30 +418,15 @@ const Page = ({ params }) => {
 					</h1>
 					<br />
 					<div id={"form-ucapan"} className={"rounded"}>
-						<Form className={"m-auto"} onSubmit={(e) => testSubmit(e)}>
+						<Form className={"m-auto"}>
 							<Form.Group>
 								<Form.Label>Nama</Form.Label>
-								<Form.Control
-									type="text"
-									min={3}
-									required
-									onChange={(e) => {
-										setListUcapan({ nama: e.target.value });
-									}}
-								/>
+								<Form.Control type="text" min={3} required />
 							</Form.Group>
 							<br />
 							<Form.Group>
 								<Form.Label>Ucapan</Form.Label>
-								<Form.Control
-									as="textarea"
-									rows={3}
-									required
-									placeholder="maximal 100 karakter"
-									onChange={(e) => {
-										setListUcapan({ messages: e.target.value });
-									}}
-								/>
+								<Form.Control as="textarea" rows={3} required />
 							</Form.Group>
 							<br />
 							<Button type="submit" className="primary">
@@ -465,47 +436,38 @@ const Page = ({ params }) => {
 						<br />
 						<br />
 						<div style={{ overflowY: "scroll", height: "25vh" }}>
-							<motion.div
-								initial={{ opacity: 0, y: 100 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								viewport={{ once: true }}
-								transition={{ duration: 1 }}
-							>
-								<MessageList
-									referance={messageListReferance}
-									className='message-list'
-									lockable={false}
-									messageBoxStyles={{ fontSize: "16px" }}
-									toBottomHeight={"100%"}
-									dataSource={[
-										listUcapan.length === 0
-											? listUcapan.map((data) => {
-													return {
-														type: "text",
-														text: data.message,
-														avatar: "/wedding.png",
-														title: data.nama,
-														className: "py-4",
-													};
-											  })
-											: "",
-										// {
-										// 	type: "text",
-										// 	text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										// 	avatar: "/wedding.png",
-										// 	title: "Wendy",
-										// 	// className: "py-4",
-										// },
-										// {
-										// 	position: "right",
-										// 	type: "text",
-										// 	text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										// 	avatar: "/wedding.png",
-										// 	title: "Budi",
-										// },
-									]}
-								/>
-							</motion.div>
+							<MessageList
+								referance={messageListReferance}
+								className='message-list'
+								lockable={false}
+								toBottomHeight={"100%"}
+								dataSource={[
+									{
+										position: "right",
+										type: "text",
+										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+										avatar: "/wedding.png",
+									},
+									{
+										position: "right",
+										type: "text",
+										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+										avatar: "/wedding.png",
+									},
+									{
+										position: "right",
+										type: "text",
+										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+										avatar: "/wedding.png",
+									},
+									{
+										position: "right",
+										type: "text",
+										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
+										avatar: "/wedding.png",
+									},
+								]}
+							/>
 						</div>
 					</div>
 				</section>

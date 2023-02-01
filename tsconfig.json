@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "app/components/*"
+      ],
+      "@prismaDb": [
+        "prismaDb.ts"
+      ]
+    },
     "target": "es5",
     "lib": [
       "dom",
@@ -25,12 +34,6 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": [
-        "app/components/*"
-      ]
-    }
   },
   "include": [
     "next-env.d.ts",
