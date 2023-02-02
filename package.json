@@ -30,6 +30,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-photo-album": "^2.0.0",
+    "sharp": "^0.31.3",
     "short-uuid": "^4.2.2",
     "swr": "^2.0.3",
     "typescript": "4.9.4",
