@@ -3,13 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_PROD")
+  relationMode = "prisma"
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model chat {
-  id          String   @id @db.VarChar(10)
+  id          Int      @id @default(autoincrement())
   nama        String   @db.Text
   chat        String   @db.Text
   id_mempelai String   @db.VarChar(10)

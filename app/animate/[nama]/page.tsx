@@ -2,7 +2,6 @@
 "use client";
 
 import "./styles.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
@@ -11,12 +10,12 @@ import dayjs from "dayjs";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
-import { useContext, useReducer, useState } from "react";
+import React, { useReducer, useState } from "react";
 import { motion } from "framer-motion";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { MessageList } from "react-chat-elements";
-import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 import ImageList from "@components/ImageList";
 
@@ -36,16 +35,26 @@ const photos = [
 	{ src: "/karina.jpg", width: 1600, height: 900 },
 ];
 
-const getData = () => {
+const fetchUrl =
+	process.env.NODE_ENV === "production"
+		? process.env.NEXT_PUBLIC_SERVER
+		: process.env.NEXT_PUBLIC_PRIVATE_SERVER;
+
+// console.log(`cek ${process.env.NEXT_PUBLIC_PRIVATE_SERVER}`);
+
+const fetcher = async () => {
 	//! get data
-};
+	const res = await fetch(`${fetchUrl}/message`, {
+		method: "POST",
+		body: JSON.stringify({
+			id: "ADFAHA",
+		}),
+		headers: {
+			"Content-type": "application/json",
+		},
+	});
 
-const sendData = () => {
-	//! send data
-};
-
-const testSubmit = (e) => {
-	e.preventDefault();
+	return res.json();
 };
 
 const Page = ({ params }) => {
@@ -60,10 +69,58 @@ const Page = ({ params }) => {
 			message: "test",
 		},
 	);
+
+	const sendData = async (e) => {
+		//! send data
+		e.preventDefault();
+		try {
+			toast.loading("loading...", {
+				id: "messages",
+			});
+			const res = await fetch(`${fetchUrl}ucapan`, {
+				method: "POST",
+				body: JSON.stringify({
+					nama: listUcapan.nama,
+					message: listUcapan.message,
+					id: "ADFAHA",
+				}),
+				headers: {
+					"Content-type": "application/json",
+				},
+			})
+				.then((res) => {
+					return res;
+				})
+				.catch((err) => {
+					return err;
+				});
+
+			if (res.status === 200) {
+				toast.success("Terima kasih atas ucapannya!", { id: "messages" });
+				trigger("messageList");
+			} else {
+				toast.error("Error, silahkan coba lagi!", { id: "messages" });
+			}
+		} catch (err) {
+			console.log(`error while send message: ${err.message}`);
+			toast.error("Error, silahkan coba lagi!", { id: "messages" });
+		}
+	};
+
+	const { trigger } = useSWRMutation("messageList", fetcher);
+	const { data } = useSWR("messageList", fetcher);
+
 	let messageListReferance = React.createRef();
 
 	return (
 		<>
+			<Toaster
+				position={"top-center"}
+				containerClassName="rounded"
+				toastOptions={{
+					duration: 3000,
+				}}
+			/>
 			<motion.div
 				initial={{ opacity: 0, y: 200 }}
 				whileInView={{ opacity: 1, y: 0 }}
@@ -432,7 +489,7 @@ const Page = ({ params }) => {
 					</h1>
 					<br />
 					<div id={"form-ucapan"} className={"rounded"}>
-						<Form className={"m-auto"} onSubmit={(e) => testSubmit(e)}>
+						<Form className={"m-auto"} onSubmit={(e) => sendData(e)}>
 							<Form.Group>
 								<Form.Label>Nama</Form.Label>
 								<Form.Control
@@ -453,7 +510,7 @@ const Page = ({ params }) => {
 									required
 									placeholder="maximal 100 karakter"
 									onChange={(e) => {
-										setListUcapan({ messages: e.target.value });
+										setListUcapan({ message: e.target.value });
 									}}
 								/>
 							</Form.Group>
@@ -471,40 +528,24 @@ const Page = ({ params }) => {
 								viewport={{ once: true }}
 								transition={{ duration: 1 }}
 							>
-								<MessageList
-									referance={messageListReferance}
-									className='message-list'
-									lockable={false}
-									messageBoxStyles={{ fontSize: "16px" }}
-									toBottomHeight={"100%"}
-									dataSource={[
-										listUcapan.length === 0
-											? listUcapan.map((data) => {
-													return {
-														type: "text",
-														text: data.message,
-														avatar: "/wedding.png",
-														title: data.nama,
-														className: "py-4",
-													};
-											  })
-											: "",
-										// {
-										// 	type: "text",
-										// 	text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										// 	avatar: "/wedding.png",
-										// 	title: "Wendy",
-										// 	// className: "py-4",
-										// },
-										// {
-										// 	position: "right",
-										// 	type: "text",
-										// 	text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										// 	avatar: "/wedding.png",
-										// 	title: "Budi",
-										// },
-									]}
-								/>
+								{!data?.data ? (
+									""
+								) : (
+									<MessageList
+										referance={messageListReferance}
+										className='message-list'
+										lockable={false}
+										messageBoxStyles={{ fontSize: "16px" }}
+										toBottomHeight={"100%"}
+										dataSource={data?.data.map((data) => {
+											return {
+												type: "text",
+												title: data.nama,
+												text: data.chat,
+											};
+										})}
+									/>
+								)}
 							</motion.div>
 						</div>
 					</div>
