@@ -2,6 +2,7 @@
 "use client";
 
 import "./styles.css";
+// import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
@@ -74,10 +75,10 @@ const Page = ({ params }) => {
 		//! send data
 		e.preventDefault();
 		try {
-			toast.loading("loading...", {
+			toast.loading("Sedang mengirimkan ucapan Anda...", {
 				id: "messages",
 			});
-			const res = await fetch(`${fetchUrl}ucapan`, {
+			const res = await fetch(`${fetchUrl}/ucapan`, {
 				method: "POST",
 				body: JSON.stringify({
 					nama: listUcapan.nama,
@@ -109,6 +110,7 @@ const Page = ({ params }) => {
 
 	const { trigger } = useSWRMutation("messageList", fetcher);
 	const { data } = useSWR("messageList", fetcher);
+	console.table(data);
 
 	let messageListReferance = React.createRef();
 
@@ -466,14 +468,14 @@ const Page = ({ params }) => {
 							renderPhoto={ImageList}
 							onClick={({ index }) => setIndex(index)}
 						/>
+						<Lightbox
+							slides={photos}
+							open={index >= 0}
+							index={index}
+							close={() => setIndex(-1)}
+							plugins={[Thumbnails]}
+						/>
 					</motion.div>
-					<Lightbox
-						slides={photos}
-						open={index >= 0}
-						index={index}
-						close={() => setIndex(-1)}
-						plugins={[Thumbnails]}
-					/>
 				</motion.div>
 			</section>
 
@@ -521,16 +523,16 @@ const Page = ({ params }) => {
 						</Form>
 						<br />
 						<br />
-						<div style={{ overflowY: "scroll", height: "25vh" }}>
-							<motion.div
-								initial={{ opacity: 0, y: 100 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								viewport={{ once: true }}
-								transition={{ duration: 1 }}
-							>
-								{!data?.data ? (
-									""
-								) : (
+						{Object.keys(data.data).length === 0 ? (
+							""
+						) : (
+							<div style={{ overflowY: "scroll", height: "25vh" }}>
+								<motion.div
+									initial={{ opacity: 0, y: 100 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									viewport={{ once: true }}
+									transition={{ duration: 1 }}
+								>
 									<MessageList
 										referance={messageListReferance}
 										className='message-list'
@@ -545,9 +547,9 @@ const Page = ({ params }) => {
 											};
 										})}
 									/>
-								)}
-							</motion.div>
-						</div>
+								</motion.div>
+							</div>
+						)}
 					</div>
 				</section>
 			</motion.div>

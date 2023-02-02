@@ -13,8 +13,6 @@ const options = {
 			: { db: { url: process.env.DATABASE_DEV } },
 };
 
-console.log(options);
-
 const client = new PrismaClient(options);
 // if (process.env.NODE_ENV !== "production") globalThis.prisma = client;
 
