@@ -331,6 +331,7 @@ const Page = ({ params }) => {
 					</div>
 				</Container>
 			</section>
+			
 			<footer>
 				Digital Invitation, created by: NerDev <br />
 				WA:

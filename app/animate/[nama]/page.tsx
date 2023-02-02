@@ -523,7 +523,7 @@ const Page = ({ params }) => {
 						</Form>
 						<br />
 						<br />
-						{Object.keys(data.data).length === 0 ? (
+						{!data ? (
 							""
 						) : (
 							<div style={{ overflowY: "scroll", height: "25vh" }}>
