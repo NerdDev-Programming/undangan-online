@@ -2,7 +2,6 @@
 "use client";
 
 import "./styles.css";
-// import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
@@ -60,6 +59,7 @@ const fetcher = async () => {
 
 const Page = ({ params }) => {
 	const [index, setIndex] = useState(-1);
+	const [music, setMusic] = useState(false);
 	const [listUcapan, setListUcapan] = useReducer(
 		(prev, next) => {
 			const data = { ...prev, ...next };
@@ -108,9 +108,36 @@ const Page = ({ params }) => {
 		}
 	};
 
+	const playMusic = () => {
+		music
+			? document.getElementById("music")?.play()
+			: document.getElementById("music")?.pause();
+
+		setMusic(!music);
+		console.log(`music : ${music}`);
+	};
+
+	var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
+	// disable user scrolling at id:home, and disable it when user click a button
+	const handleKeyDown = (e) => {
+		if (e.keyCode === keys[37]) {
+			e.preventDefault();
+			setIndex((prev) => prev - 1);
+		} else if (e.keyCode === keys[38]) {
+			e.preventDefault();
+			setIndex((prev) => prev + 1);
+		} else if (e.keyCode === keys[39]) {
+			e.preventDefault();
+			setIndex((prev) => prev + 2);
+		} else if (e.keyCode === keys[40]) {
+			e.preventDefault();
+			setIndex((prev) => prev - 2);
+		}
+	};
+
 	const { trigger } = useSWRMutation("messageList", fetcher);
 	const { data } = useSWR("messageList", fetcher);
-	console.table(data);
+	// console.table(data);
 
 	let messageListReferance = React.createRef();
 
@@ -123,13 +150,46 @@ const Page = ({ params }) => {
 					duration: 3000,
 				}}
 			/>
+
+			<audio id="music" autoPlay>
+				<source src={"/beautiful-in-white.mp3"} type="audio/mp3" />
+			</audio>
+
+			<Button onClick={playMusic} id="musicControl" className="visually-hidden">
+				{music ? (
+					<Image
+						alt="play-music"
+						src={"/volume-on.png"}
+						height={"40"}
+						width={"40"}
+						className={"rounded"}
+						style={{ height: "2rem", width: "2rem" }}
+					/>
+				) : (
+					<Image
+						alt="play-music"
+						src={"/volume-off.png"}
+						height={"40"}
+						width={"40"}
+						className={"rounded"}
+						style={{ height: "2rem", width: "2rem" }}
+					/>
+				)}
+			</Button>
+
 			<motion.div
 				initial={{ opacity: 0, y: 200 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.8 }}
+				className="stop-scrolling"
 			>
-				<section id="home">
+				<section
+					id="home"
+					onKeyDown={(e) => {
+						handleKeyDown(e);
+					}}
+				>
 					<Image
 						src={"/contohCouple.jpg"}
 						alt={"mempelai"}
@@ -152,6 +212,21 @@ const Page = ({ params }) => {
 					<div id="bottom1">
 						Dear Mr./Mrs./Ms. <br />
 						{params.nama.charAt(0).toUpperCase() + params.nama.slice(1)}
+						<br />
+
+						{/* rome-ignore lint/a11y/useValidAnchor: <explanation> */}
+						<a
+							href="#weddingDay"
+							onClick={() => {
+								document.getElementById("music").play();
+								document
+									.getElementById("musicControl")
+									?.classList.remove("visually-hidden");
+							}}
+							className="btn btn-primary"
+						>
+							Open Invitation
+						</a>
 					</div>
 				</section>
 			</motion.div>
@@ -523,7 +598,7 @@ const Page = ({ params }) => {
 						</Form>
 						<br />
 						<br />
-						{!data ? (
+						{!data?.data ? (
 							""
 						) : (
 							<div style={{ overflowY: "scroll", height: "25vh" }}>
