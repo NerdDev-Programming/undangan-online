@@ -704,7 +704,7 @@ const Page = ({ params }) => {
 							transition={{ duration: 1 }}
 						>
 							<p
-								style={{ fontSize: "1.5rem", width: "80vw", margin: "auto" }}
+								style={{ fontSize: "1.5rem", width: "40vw", margin: "auto" }}
 								className={"word-wrap"}
 							>
 								Our joy will be more complete with your presence and blessing in
@@ -726,6 +726,7 @@ const Page = ({ params }) => {
 			</section>
 
 			<footer>
+				<br />
 				Digital Invitation, created by: NerDev <br />
 				WA:
 				<br />
