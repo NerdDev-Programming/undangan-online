@@ -2,7 +2,6 @@ section {
   height: 100vh;
   position: relative;
   width: 100vw;
-  /* overflow-y: hidden; */
 }
 
 #detail-tanggal {
@@ -103,7 +102,7 @@ h1 {
   background-color: beige;
 }
 
-@media screen and (max-width: 610px) {
+@media screen and (max-width: 480px) {
   h1 {
     font-size: 2rem
   }
@@ -111,14 +110,27 @@ h1 {
   #form-ucapan {
     width: 80vw;
   }
+
+  #musicControl {
+    bottom: 0vh;
+    right: 5vw;
+  }
 }
 
 footer {
-  height: 15vh;
+  height: 20vh;
   font-size: 14px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding-bottom: 20px;
   margin: auto;
+}
+
+#musicControl {
+  /* place at fixed bottom screen */
+  position: fixed;
+  bottom: 5vh;
+  right: 20vw;
+  z-index: 2;
 }

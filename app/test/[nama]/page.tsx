@@ -2,21 +2,20 @@
 "use client";
 
 import "./styles.css";
-import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 import { Dancing_Script } from "@next/font/google";
 import Image from "next/image";
-import { Container, Carousel, Form, FormGroup, Button } from "react-bootstrap";
+import { Container, Carousel, Form, Button } from "react-bootstrap";
 import dayjs from "dayjs";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
-import { useState } from "react";
+import React, { useReducer, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { MessageList, Avatar } from "react-chat-elements";
-import React from "react";
+import { MessageList } from "react-chat-elements";
+import toast, { Toaster } from "react-hot-toast";
 
 import ImageList from "@components/ImageList";
 
@@ -36,20 +35,144 @@ const photos = [
 	{ src: "/karina.jpg", width: 1600, height: 900 },
 ];
 
-const getData = () => {
-	//! get data
-};
+const fetchUrl =
+	process.env.NODE_ENV === "production"
+		? process.env.NEXT_PUBLIC_SERVER
+		: process.env.NEXT_PUBLIC_PRIVATE_SERVER;
 
-const sendData = () => {
-	//! send data
+const fetcher = async () => {
+	//! get data
+	const res = await fetch(`${fetchUrl}/message`, {
+		method: "POST",
+		body: JSON.stringify({
+			id: "ADFAHA",
+		}),
+		headers: {
+			"Content-type": "application/json",
+		},
+	});
+
+	return res.json();
 };
 
 const Page = ({ params }) => {
-	let messageListReferance = React.createRef();
 	const [index, setIndex] = useState(-1);
+	const [isHidden, setIsHidden] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(false);
+	const [listUcapan, setListUcapan] = useReducer(
+		(prev, next) => {
+			const data = { ...prev, ...next };
+			return data;
+		},
+		{
+			nama: "test",
+			message: "test",
+		},
+	);
+
+	const sendData = async (e) => {
+		//! send data
+		e.preventDefault();
+		try {
+			toast.loading("Sedang mengirimkan ucapan Anda...", {
+				id: "messages",
+			});
+			const res = await fetch(`${fetchUrl}/ucapan`, {
+				method: "POST",
+				body: JSON.stringify({
+					nama: listUcapan.nama,
+					message: listUcapan.message,
+					id: "ADFAHA",
+				}),
+				headers: {
+					"Content-type": "application/json",
+				},
+			})
+				.then((res) => {
+					return res;
+				})
+				.catch((err) => {
+					return err;
+				});
+
+			if (res.status === 200) {
+				toast.success("Terima kasih atas ucapannya!", { id: "messages" });
+				trigger("messageList");
+			} else {
+				toast.error("Error, silahkan coba lagi!", { id: "messages" });
+			}
+		} catch (err) {
+			console.log(`error while send message: ${err.message}`);
+			toast.error("Error, silahkan coba lagi!", { id: "messages" });
+		}
+	};
+
+	if (isPlaying === false) {
+		document.getElementById("music")?.pause();
+	} else {
+		document.getElementById("music")?.play();
+	}
+
+	const disableScroll = () => {
+		window.scrollTo(0, 0);
+		document.body.style.overflow = "hidden";
+		document.body.style.touchAction = "none";
+	};
+
+	disableScroll();
+
+	const enableScroll = () => {
+		document.body.style.overflow = "auto";
+		document.body.style.touchAction = "auto";
+		document.getElementById("opening")?.classList.add("visually-hidden");
+	};
+
+	if (isHidden) {
+		enableScroll();
+		document
+			.getElementById("musicControl")
+			?.classList.remove("visually-hidden");
+	}
+
+	const { trigger } = useSWRMutation("messageList", fetcher);
+	const { data } = useSWR("messageList", fetcher);
+	// console.table(data);
+
+	let messageListReferance = React.createRef();
 
 	return (
 		<>
+			<Toaster
+				position={"top-center"}
+				containerClassName="rounded"
+				toastOptions={{
+					duration: 3000,
+				}}
+			/>
+
+			<audio id="music">
+				<source src={"/beautiful-in-white.mp3"} type="audio/mp3" />
+			</audio>
+
+			<Button
+				onClick={() => {
+					setIsPlaying(!isPlaying);
+				}}
+				id="musicControl"
+				className="visually-hidden"
+			>
+				{
+					<Image
+						alt="play-music"
+						src={isPlaying === false ? "/volume-off.png" : "/volume-on.png"}
+						height={"40"}
+						width={"40"}
+						className={"rounded"}
+						style={{ height: "2rem", width: "2rem" }}
+					/>
+				}
+			</Button>
+
 			<motion.div
 				initial={{ opacity: 0, y: 200 }}
 				whileInView={{ opacity: 1, y: 0 }}
@@ -79,6 +202,20 @@ const Page = ({ params }) => {
 					<div id="bottom1">
 						Dear Mr./Mrs./Ms. <br />
 						{params.nama.charAt(0).toUpperCase() + params.nama.slice(1)}
+						<br />
+
+						{/* rome-ignore lint/a11y/useValidAnchor: <explanation> */}
+						<a
+							id="opening"
+							href="#weddingDay"
+							onClick={() => {
+								setIsHidden(!isHidden);
+								setIsPlaying(!isPlaying);
+							}}
+							className="btn btn-primary"
+						>
+							Open Invitation
+						</a>
 					</div>
 				</section>
 			</motion.div>
@@ -112,6 +249,15 @@ const Page = ({ params }) => {
 							>
 								Andi and Rita
 							</h1>
+							<br />
+							<a
+								href="https://www.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Andi+and+Rita&details=The+Wedding+of+Andi+and+Rita+%7C+January+23th+2023+%7C+HOTEL+Aston+Lt.3+%7C+17.00+-+20.00+WIB&location=aston+pontianak+hotel&dates=20230207T100000Z%2F20230207T140000Z"
+								target={"_blank"}
+								rel="noreferrer"
+								className="btn btn-primary"
+							>
+								Ingatkan Saya
+							</a>
 						</motion.div>
 					</div>
 				</section>
@@ -183,7 +329,7 @@ const Page = ({ params }) => {
 								src={"/karina.jpg"}
 								alt="the groom"
 								width={380}
-								height={300}
+								height={400}
 								style={{
 									objectFit: "contain",
 									width: "auto",
@@ -241,10 +387,14 @@ const Page = ({ params }) => {
 							src={"/contoh4.jpg"}
 							alt="contoh4"
 							fill
+							sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
 							style={{
 								zIndex: -1,
 								opacity: 0.6,
 								objectFit: "cover",
+								position: "absolute",
 							}}
 						/>
 
@@ -395,21 +545,21 @@ const Page = ({ params }) => {
 							renderPhoto={ImageList}
 							onClick={({ index }) => setIndex(index)}
 						/>
+						<Lightbox
+							slides={photos}
+							open={index >= 0}
+							index={index}
+							close={() => setIndex(-1)}
+							plugins={[Thumbnails]}
+						/>
 					</motion.div>
-					<Lightbox
-						slides={photos}
-						open={index >= 0}
-						index={index}
-						close={() => setIndex(-1)}
-						plugins={[Thumbnails]}
-					/>
 				</motion.div>
 			</section>
 
 			<motion.div
 				initial={{ opacity: 0, y: 200 }}
 				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true, amount: 0.2 }}
+				viewport={{ once: true, amount: 0.1 }}
 				transition={{ duration: 1 }}
 			>
 				<section id="ucapan">
@@ -418,15 +568,30 @@ const Page = ({ params }) => {
 					</h1>
 					<br />
 					<div id={"form-ucapan"} className={"rounded"}>
-						<Form className={"m-auto"}>
+						<Form className={"m-auto"} onSubmit={(e) => sendData(e)}>
 							<Form.Group>
 								<Form.Label>Nama</Form.Label>
-								<Form.Control type="text" min={3} required />
+								<Form.Control
+									type="text"
+									min={3}
+									required
+									onChange={(e) => {
+										setListUcapan({ nama: e.target.value });
+									}}
+								/>
 							</Form.Group>
 							<br />
 							<Form.Group>
 								<Form.Label>Ucapan</Form.Label>
-								<Form.Control as="textarea" rows={3} required />
+								<Form.Control
+									as="textarea"
+									rows={3}
+									required
+									placeholder="maximal 100 karakter"
+									onChange={(e) => {
+										setListUcapan({ message: e.target.value });
+									}}
+								/>
 							</Form.Group>
 							<br />
 							<Button type="submit" className="primary">
@@ -435,40 +600,33 @@ const Page = ({ params }) => {
 						</Form>
 						<br />
 						<br />
-						<div style={{ overflowY: "scroll", height: "25vh" }}>
-							<MessageList
-								referance={messageListReferance}
-								className='message-list'
-								lockable={false}
-								toBottomHeight={"100%"}
-								dataSource={[
-									{
-										position: "right",
-										type: "text",
-										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										avatar: "/wedding.png",
-									},
-									{
-										position: "right",
-										type: "text",
-										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										avatar: "/wedding.png",
-									},
-									{
-										position: "right",
-										type: "text",
-										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										avatar: "/wedding.png",
-									},
-									{
-										position: "right",
-										type: "text",
-										text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit",
-										avatar: "/wedding.png",
-									},
-								]}
-							/>
-						</div>
+						{!data?.data ? (
+							""
+						) : (
+							<div style={{ overflowY: "auto", height: "25vh" }}>
+								<motion.div
+									initial={{ opacity: 0, y: 100 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									viewport={{ once: true }}
+									transition={{ duration: 1 }}
+								>
+									<MessageList
+										referance={messageListReferance}
+										className='message-list'
+										lockable={false}
+										messageBoxStyles={{ overflowX: "hidden" }}
+										toBottomHeight={"100%"}
+										dataSource={data?.data.map((data) => {
+											return {
+												type: "text",
+												title: data.nama,
+												text: data.chat,
+											};
+										})}
+									/>
+								</motion.div>
+							</div>
+						)}
 					</div>
 				</section>
 			</motion.div>
@@ -505,6 +663,7 @@ const Page = ({ params }) => {
 								alt="contoh"
 								width={600}
 								height={700}
+								priority
 								style={{
 									width: "100vw",
 									height: "100vh",

@@ -40,8 +40,6 @@ const fetchUrl =
 		? process.env.NEXT_PUBLIC_SERVER
 		: process.env.NEXT_PUBLIC_PRIVATE_SERVER;
 
-// console.log(`cek ${process.env.NEXT_PUBLIC_PRIVATE_SERVER}`);
-
 const fetcher = async () => {
 	//! get data
 	const res = await fetch(`${fetchUrl}/message`, {
@@ -59,9 +57,8 @@ const fetcher = async () => {
 
 const Page = ({ params }) => {
 	const [index, setIndex] = useState(-1);
-	const [isHidden, setIsHidden] = useState(false);
-	// const [music, setMusic] = useState(false);
-	const [musicIcon, setMusicIcon] = useState("/volume-on.png");
+	// const [musicIcon, setMusicIcon] = useState
+	let isHidden = false;
 	const music = useRef(false);
 	const [listUcapan, setListUcapan] = useReducer(
 		(prev, next) => {
@@ -114,33 +111,30 @@ const Page = ({ params }) => {
 	const playMusic = () => {
 		if (music.current === true) {
 			document.getElementById("music")?.play();
-			setMusicIcon("/volume-off.png");
+			// setMusicIcon("/volume-off.png");
 		} else {
 			document.getElementById("music")?.pause();
-			setMusicIcon("/volume-on.png");
+			// setMusicIcon("/volume-on.png");
 		}
-		// setMusic(!music);
 		music.current = !music.current;
 	};
 
-	// create function to disable user scroll behavior
 	const disableScroll = () => {
+		window.scrollTo(0, 0);
 		document.body.style.overflow = "hidden";
 		document.body.style.touchAction = "none";
-		window.scrollTo(0, 0);
 	};
 
 	const enableScroll = () => {
 		document.body.style.overflow = "auto";
 		document.body.style.touchAction = "auto";
 		document.getElementById("opening")?.classList.add("visually-hidden");
-		setIsHidden(true);
+		isHidden = true;
 	};
 
-	// {isHidden === false ? disableScroll() : enableScroll()}
-	// if (isHidden === false) {
-	// 	disableScroll();
-	// }
+	{
+		isHidden === false ? disableScroll() : enableScroll();
+	}
 
 	const { trigger } = useSWRMutation("messageList", fetcher);
 	const { data } = useSWR("messageList", fetcher);
@@ -164,28 +158,10 @@ const Page = ({ params }) => {
 
 			<Button onClick={playMusic} id="musicControl" className="visually-hidden">
 				{
-					/* {music.current === true ? (
 					<Image
 						alt="play-music"
-						src={"/volume-on.png"}
-						height={"40"}
-						width={"40"}
-						className={"rounded"}
-						style={{ height: "2rem", width: "2rem" }}
-					/>
-				) : (
-					<Image
-						alt="play-music"
-						src={"/volume-off.png"}
-						height={"40"}
-						width={"40"}
-						className={"rounded"}
-						style={{ height: "2rem", width: "2rem" }}
-					/>
-				)} */
-					<Image
-						alt="play-music"
-						src={musicIcon}
+						// src={music.current === true ? "/volume-on.png" : "/volume-off.png"}
+						src={setMu}
 						height={"40"}
 						width={"40"}
 						className={"rounded"}
