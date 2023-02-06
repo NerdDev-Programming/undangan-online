@@ -114,25 +114,20 @@ const Page = ({ params }) => {
 			: document.getElementById("music")?.pause();
 
 		setMusic(!music);
-		console.log(`music : ${music}`);
 	};
 
-	var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
-	// disable user scrolling at id:home, and disable it when user click a button
-	const handleKeyDown = (e) => {
-		if (e.keyCode === keys[37]) {
-			e.preventDefault();
-			setIndex((prev) => prev - 1);
-		} else if (e.keyCode === keys[38]) {
-			e.preventDefault();
-			setIndex((prev) => prev + 1);
-		} else if (e.keyCode === keys[39]) {
-			e.preventDefault();
-			setIndex((prev) => prev + 2);
-		} else if (e.keyCode === keys[40]) {
-			e.preventDefault();
-			setIndex((prev) => prev - 2);
-		}
+	// create function to disable user scroll behavior
+	const disableScroll = () => {
+		document.body.style.overflow = "hidden";
+		document.body.style.touchAction = "none";
+		// force user to the top screen
+		window.scrollTo(0, 0);
+	};
+
+	const enableScroll = () => {
+		document.body.style.overflow = "auto";
+		document.body.style.touchAction = "auto";
+		document.getElementById("opening")?.classList.add("visually-hidden");
 	};
 
 	const { trigger } = useSWRMutation("messageList", fetcher);
@@ -151,7 +146,7 @@ const Page = ({ params }) => {
 				}}
 			/>
 
-			<audio id="music" autoPlay>
+			<audio id="music">
 				<source src={"/beautiful-in-white.mp3"} type="audio/mp3" />
 			</audio>
 
@@ -182,14 +177,8 @@ const Page = ({ params }) => {
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.8 }}
-				className="stop-scrolling"
 			>
-				<section
-					id="home"
-					onKeyDown={(e) => {
-						handleKeyDown(e);
-					}}
-				>
+				<section id="home">
 					<Image
 						src={"/contohCouple.jpg"}
 						alt={"mempelai"}
@@ -216,12 +205,14 @@ const Page = ({ params }) => {
 
 						{/* rome-ignore lint/a11y/useValidAnchor: <explanation> */}
 						<a
+							id="opening"
 							href="#weddingDay"
 							onClick={() => {
 								document.getElementById("music").play();
 								document
 									.getElementById("musicControl")
 									?.classList.remove("visually-hidden");
+								enableScroll();
 							}}
 							className="btn btn-primary"
 						>
@@ -260,6 +251,15 @@ const Page = ({ params }) => {
 							>
 								Andi and Rita
 							</h1>
+							<br />
+							<a
+								href="https://www.google.com/calendar/render?action=TEMPLATE&text=The+Wedding+of+Andi+and+Rita&details=The+Wedding+of+Andi+and+Rita+%7C+January+23th+2023+%7C+HOTEL+Aston+Lt.3+%7C+17.00+-+20.00+WIB&location=aston+pontianak+hotel&dates=20230207T100000Z%2F20230207T140000Z"
+								target={"_blank"}
+								rel="noreferrer"
+								className="btn btn-primary"
+							>
+								Ingatkan Saya
+							</a>
 						</motion.div>
 					</div>
 				</section>
@@ -601,7 +601,7 @@ const Page = ({ params }) => {
 						{!data?.data ? (
 							""
 						) : (
-							<div style={{ overflowY: "scroll", height: "25vh" }}>
+							<div style={{ overflowY: "auto", height: "25vh" }}>
 								<motion.div
 									initial={{ opacity: 0, y: 100 }}
 									whileInView={{ opacity: 1, y: 0 }}
@@ -612,7 +612,7 @@ const Page = ({ params }) => {
 										referance={messageListReferance}
 										className='message-list'
 										lockable={false}
-										messageBoxStyles={{ fontSize: "16px" }}
+										messageBoxStyles={{ overflowX: "hidden" }}
 										toBottomHeight={"100%"}
 										dataSource={data?.data.map((data) => {
 											return {

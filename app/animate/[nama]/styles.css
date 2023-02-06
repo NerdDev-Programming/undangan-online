@@ -2,7 +2,6 @@ section {
   height: 100vh;
   position: relative;
   width: 100vw;
-  /* overflow-y: hidden; */
 }
 
 #detail-tanggal {
@@ -119,12 +118,12 @@ h1 {
 }
 
 footer {
-  height: 15vh;
+  height: 20vh;
   font-size: 14px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding-bottom: 20px;
   margin: auto;
 }
 
