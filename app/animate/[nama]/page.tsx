@@ -704,8 +704,8 @@ const Page = ({ params }) => {
 							transition={{ duration: 1 }}
 						>
 							<p
-								style={{ fontSize: "1.5rem", width: "40vw", margin: "auto" }}
-								className={"word-wrap"}
+								style={{ fontSize: "1.5rem", width: "auto", margin: "auto" }}
+								className={"word-wrap px-5"}
 							>
 								Our joy will be more complete with your presence and blessing in
 								this celebration of love. With warm regards,
