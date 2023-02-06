@@ -107,31 +107,34 @@ const Page = ({ params }) => {
 		}
 	};
 
-	if (isPlaying === false) {
-		document.getElementById("music")?.pause();
-	} else {
-		document.getElementById("music")?.play();
+	if (typeof window !== "undefined") {
+		if (isPlaying === false) {
+			document.getElementById("music")?.pause();
+		} else {
+			document.getElementById("music")?.play();
+		}
 	}
 
 	const disableScroll = () => {
-		window.scrollTo(0, 0);
-		document.body.style.overflow = "hidden";
-		document.body.style.touchAction = "none";
+		if (typeof window !== "undefined") {
+			window.scrollTo(0, 0);
+			document.body.style.overflow = "hidden";
+			document.body.style.touchAction = "none";
+		}
 	};
 
 	disableScroll();
 
 	const enableScroll = () => {
-		document.body.style.overflow = "auto";
-		document.body.style.touchAction = "auto";
-		document.getElementById("opening")?.classList.add("visually-hidden");
+		if (typeof window !== "undefined") {
+			document.body.style.overflow = "auto";
+			document.body.style.touchAction = "auto";
+			document.getElementById("opening")?.classList.add("visually-hidden");
+		}
 	};
 
 	if (isHidden) {
 		enableScroll();
-		document
-			.getElementById("musicControl")
-			?.classList.remove("visually-hidden");
 	}
 
 	const { trigger } = useSWRMutation("messageList", fetcher);
@@ -211,6 +214,9 @@ const Page = ({ params }) => {
 							onClick={() => {
 								setIsHidden(!isHidden);
 								setIsPlaying(!isPlaying);
+								document
+									.getElementById("musicControl")
+									?.classList.remove("visually-hidden");
 							}}
 							className="btn btn-primary"
 						>
