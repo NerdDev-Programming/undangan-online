@@ -57,9 +57,8 @@ const fetcher = async () => {
 
 const Page = ({ params }) => {
 	const [index, setIndex] = useState(-1);
-	// const [musicIcon, setMusicIcon] = useState
-	let isHidden = false;
-	const music = useRef(false);
+	const [isHidden, setIsHidden] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(false);
 	const [listUcapan, setListUcapan] = useReducer(
 		(prev, next) => {
 			const data = { ...prev, ...next };
@@ -108,16 +107,11 @@ const Page = ({ params }) => {
 		}
 	};
 
-	const playMusic = () => {
-		if (music.current === true) {
-			document.getElementById("music")?.play();
-			// setMusicIcon("/volume-off.png");
-		} else {
-			document.getElementById("music")?.pause();
-			// setMusicIcon("/volume-on.png");
-		}
-		music.current = !music.current;
-	};
+	if (isPlaying === false) {
+		document.getElementById("music")?.pause();
+	} else {
+		document.getElementById("music")?.play();
+	}
 
 	const disableScroll = () => {
 		window.scrollTo(0, 0);
@@ -125,15 +119,19 @@ const Page = ({ params }) => {
 		document.body.style.touchAction = "none";
 	};
 
+	disableScroll();
+
 	const enableScroll = () => {
 		document.body.style.overflow = "auto";
 		document.body.style.touchAction = "auto";
 		document.getElementById("opening")?.classList.add("visually-hidden");
-		isHidden = true;
 	};
 
-	{
-		isHidden === false ? disableScroll() : enableScroll();
+	if (isHidden) {
+		enableScroll();
+		document
+			.getElementById("musicControl")
+			?.classList.remove("visually-hidden");
 	}
 
 	const { trigger } = useSWRMutation("messageList", fetcher);
@@ -156,12 +154,17 @@ const Page = ({ params }) => {
 				<source src={"/beautiful-in-white.mp3"} type="audio/mp3" />
 			</audio>
 
-			<Button onClick={playMusic} id="musicControl" className="visually-hidden">
+			<Button
+				onClick={() => {
+					setIsPlaying(!isPlaying);
+				}}
+				id="musicControl"
+				className="visually-hidden"
+			>
 				{
 					<Image
 						alt="play-music"
-						// src={music.current === true ? "/volume-on.png" : "/volume-off.png"}
-						src={setMu}
+						src={isPlaying === false ? "/volume-off.png" : "/volume-on.png"}
 						height={"40"}
 						width={"40"}
 						className={"rounded"}
@@ -206,11 +209,8 @@ const Page = ({ params }) => {
 							id="opening"
 							href="#weddingDay"
 							onClick={() => {
-								document.getElementById("music").play();
-								document
-									.getElementById("musicControl")
-									?.classList.remove("visually-hidden");
-								enableScroll();
+								setIsHidden(!isHidden);
+								setIsPlaying(!isPlaying);
 							}}
 							className="btn btn-primary"
 						>
@@ -329,7 +329,7 @@ const Page = ({ params }) => {
 								src={"/karina.jpg"}
 								alt="the groom"
 								width={380}
-								height={300}
+								height={400}
 								style={{
 									objectFit: "contain",
 									width: "auto",
@@ -387,10 +387,14 @@ const Page = ({ params }) => {
 							src={"/contoh4.jpg"}
 							alt="contoh4"
 							fill
+							sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
 							style={{
 								zIndex: -1,
 								opacity: 0.6,
 								objectFit: "cover",
+								position: "absolute",
 							}}
 						/>
 
@@ -659,6 +663,7 @@ const Page = ({ params }) => {
 								alt="contoh"
 								width={600}
 								height={700}
+								priority
 								style={{
 									width: "100vw",
 									height: "100vh",
