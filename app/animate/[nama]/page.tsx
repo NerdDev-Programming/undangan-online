@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import PhotoAlbum from "react-photo-album";
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
@@ -59,7 +59,10 @@ const fetcher = async () => {
 
 const Page = ({ params }) => {
 	const [index, setIndex] = useState(-1);
-	const [music, setMusic] = useState(false);
+	const [isHidden, setIsHidden] = useState(false);
+	// const [music, setMusic] = useState(false);
+	const [musicIcon, setMusicIcon] = useState("/volume-on.png");
+	const music = useRef(false);
 	const [listUcapan, setListUcapan] = useReducer(
 		(prev, next) => {
 			const data = { ...prev, ...next };
@@ -109,18 +112,21 @@ const Page = ({ params }) => {
 	};
 
 	const playMusic = () => {
-		music
-			? document.getElementById("music")?.play()
-			: document.getElementById("music")?.pause();
-
-		setMusic(!music);
+		if (music.current === true) {
+			document.getElementById("music")?.play();
+			setMusicIcon("/volume-off.png");
+		} else {
+			document.getElementById("music")?.pause();
+			setMusicIcon("/volume-on.png");
+		}
+		// setMusic(!music);
+		music.current = !music.current;
 	};
 
 	// create function to disable user scroll behavior
 	const disableScroll = () => {
 		document.body.style.overflow = "hidden";
 		document.body.style.touchAction = "none";
-		// force user to the top screen
 		window.scrollTo(0, 0);
 	};
 
@@ -128,7 +134,13 @@ const Page = ({ params }) => {
 		document.body.style.overflow = "auto";
 		document.body.style.touchAction = "auto";
 		document.getElementById("opening")?.classList.add("visually-hidden");
+		setIsHidden(true);
 	};
+
+	// {isHidden === false ? disableScroll() : enableScroll()}
+	// if (isHidden === false) {
+	// 	disableScroll();
+	// }
 
 	const { trigger } = useSWRMutation("messageList", fetcher);
 	const { data } = useSWR("messageList", fetcher);
@@ -151,7 +163,8 @@ const Page = ({ params }) => {
 			</audio>
 
 			<Button onClick={playMusic} id="musicControl" className="visually-hidden">
-				{music ? (
+				{
+					/* {music.current === true ? (
 					<Image
 						alt="play-music"
 						src={"/volume-on.png"}
@@ -169,7 +182,16 @@ const Page = ({ params }) => {
 						className={"rounded"}
 						style={{ height: "2rem", width: "2rem" }}
 					/>
-				)}
+				)} */
+					<Image
+						alt="play-music"
+						src={musicIcon}
+						height={"40"}
+						width={"40"}
+						className={"rounded"}
+						style={{ height: "2rem", width: "2rem" }}
+					/>
+				}
 			</Button>
 
 			<motion.div

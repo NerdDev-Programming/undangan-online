@@ -6,4 +6,5 @@ html {
   margin: 0;
   scroll-behavior: smooth;
   /* padding: 20px; */
+  overflow-x: hidden;
 }
